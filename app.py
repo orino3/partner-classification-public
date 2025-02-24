@@ -26,9 +26,6 @@ logger = logging.getLogger(__name__)
 # Load environment variables
 load_dotenv()
 
-# Debug print
-logger.info(f"OpenAI API Key: {os.getenv('OPENAI_API_KEY')}")
-
 # Create the FastAPI app
 app = FastAPI(
     title="Partner Evaluator",
