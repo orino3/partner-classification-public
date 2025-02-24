@@ -10,5 +10,6 @@ services:
         value: 8000
       - key: OPENAI_API_KEY
         sync: false
+        fromVariable: OPENAI_API_KEY
       - key: ANTHROPIC_API_KEY
         sync: false 
