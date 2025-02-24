@@ -7,3 +7,4 @@ crawl4ai==0.4.248
 pydantic>=2.5.3
 fastapi==0.109.2
 uvicorn==0.24.0
+validators==0.22.0
