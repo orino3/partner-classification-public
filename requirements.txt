@@ -1,0 +1,9 @@
+Flask==3.0.0
+gunicorn==23.0.0
+openai>=1.61.0
+python-dotenv==1.0.0
+requests==2.31.0
+crawl4ai==0.4.248
+pydantic>=2.5.3
+fastapi==0.109.2
+uvicorn==0.24.0

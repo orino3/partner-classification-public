@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Evaluator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Partner Evaluator</h1>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="mb-4">
+                    <label for="url" class="block text-sm font-medium text-gray-700 mb-2">Website URL</label>
+                    <input type="url" id="url" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                           placeholder="Enter website URL">
+                </div>
+                
+                <button id="evaluate" 
+                        class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                    Evaluate Partner Probability
+                </button>
+            </div>
+            
+            <div id="result" class="mt-6 bg-white rounded-lg shadow-lg p-6 hidden">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">Evaluation Results</h2>
+                
+                <!-- Core Scores Section -->
+                <div class="section-card">
+                    <h3 class="section-header">Core Scores</h3>
+                    <div class="space-y-4">
+                        <div class="score-display">
+                            <div class="tooltip-container">
+                                <span class="score-label">Partnership Potential</span>
+                                <div class="tooltip">High score (80-100%) means they'd be an excellent partner for accessiBe</div>
+                            </div>
+                            <div class="score-bar">
+                                <div id="probability-bar" class="score-bar-fill probability"></div>
+                            </div>
+                            <span id="probability-value" class="score-value"></span>
+                        </div>
+
+                        <div class="score-display">
+                            <div class="tooltip-container">
+                                <span class="score-label">Reach Score</span>
+                                <div class="tooltip">Measures how many website owners they can connect with</div>
+                            </div>
+                            <div class="score-bar">
+                                <div id="reach-bar" class="score-bar-fill reach"></div>
+                            </div>
+                            <span id="reach-value" class="score-value"></span>
+                        </div>
+
+                        <div class="score-display">
+                            <div class="tooltip-container">
+                                <span class="score-label">Relevance Score</span>
+                                <div class="tooltip">Shows how well accessibility fits into their current business</div>
+                            </div>
+                            <div class="score-bar">
+                                <div id="relevance-bar" class="score-bar-fill relevance"></div>
+                            </div>
+                            <span id="relevance-value" class="score-value"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Profile Section -->
+                <div class="section-card">
+                    <h3 class="section-header">Business Profile</h3>
+                    <div class="info-grid">
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Industry</span>
+                            <p id="industry" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Company Size</span>
+                            <p id="company-size" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Geographic Reach</span>
+                            <p id="geographic-reach" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Years in Business</span>
+                            <p id="years-in-business" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Client Portfolio Size</span>
+                            <p id="portfolio-size" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Assessment Section -->
+                <div class="section-card">
+                    <h3 class="section-header">Technical Assessment</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Technology Stack</span>
+                            <div id="tech-stack" class="tag-list"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Accessibility Solutions</span>
+                            <p id="accessibility-solutions" class="mt-1 text-gray-900"></p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Integration Score</span>
+                            <div id="integration-score" class="star-rating mt-1"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Development Services</span>
+                            <div id="dev-services" class="tag-list"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Hosting Services</span>
+                            <p id="hosting-services" class="mt-1 text-gray-900"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Position Section -->
+                <div class="section-card">
+                    <h3 class="section-header">Market Position</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Market Segments</span>
+                            <div id="market-segments" class="flex flex-wrap gap-2 mt-1"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Competitor Relationships</span>
+                            <div id="competitors" class="space-y-1"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Certifications & Memberships</span>
+                            <div id="certifications" class="flex flex-wrap gap-2 mt-1"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Awards</span>
+                            <div id="awards" class="space-y-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client Relationships Section -->
+                <div class="section-card">
+                    <h3 class="section-header">Client Relationships</h3>
+                    <div class="info-grid">
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Client Types</span>
+                            <div id="client-types" class="flex flex-wrap gap-2 mt-1"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Average Client Size</span>
+                            <p id="avg-client-size" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Retention Rate</span>
+                            <p id="retention-rate" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Service Model</span>
+                            <p id="service-model" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Success Stories</span>
+                            <p id="success-stories" class="mt-1 text-gray-900 font-medium"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Model Section -->
+                <div class="section-card">
+                    <h3 class="section-header">Business Model</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Revenue Streams</span>
+                            <div id="revenue-streams" class="flex flex-wrap gap-2 mt-1"></div>
+                        </div>
+                        <div class="info-grid">
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Pricing Model</span>
+                                <p id="pricing-model" class="mt-1 text-gray-900 font-medium"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Sales Approach</span>
+                                <p id="sales-approach" class="mt-1 text-gray-900 font-medium"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Service Delivery</span>
+                                <p id="service-delivery" class="mt-1 text-gray-900 font-medium"></p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Contract Types</span>
+                                <div id="contract-types" class="flex flex-wrap gap-2 mt-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compliance & Growth Section -->
+                <div class="section-card">
+                    <h3 class="section-header">Compliance & Growth</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Regulatory Focus</span>
+                            <div id="regulatory-focus" class="flex flex-wrap gap-2 mt-1"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Compliance Services</span>
+                            <div id="compliance-services" class="flex flex-wrap gap-2 mt-1"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Growth Indicators</span>
+                            <div id="growth-indicators" class="space-y-1"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Digital Presence Score</span>
+                            <div id="digital-presence-score" class="flex"></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Future Plans</span>
+                            <div id="future-plans" class="space-y-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Partnership Evaluation Section -->
+                <div class="section-card">
+                    <h3 class="section-header">Partnership Evaluation</h3>
+                    <div class="info-grid">
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Key Strengths</span>
+                            <ul id="strengths" class="list-disc list-inside text-gray-800"></ul>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Challenges</span>
+                            <ul id="challenges" class="list-disc list-inside text-gray-800"></ul>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Opportunities</span>
+                            <ul id="opportunities" class="list-disc list-inside text-gray-800"></ul>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-gray-500">Risks</span>
+                            <ul id="risks" class="list-disc list-inside text-gray-800"></ul>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-sm font-medium text-gray-500">Recommended Approach</span>
+                        <p id="recommended-approach" class="text-gray-800 mt-1"></p>
+                    </div>
+                </div>
+
+                <!-- Existing Sections -->
+                <div>
+                    <h3 class="font-medium text-gray-700 mb-2">Key Indicators</h3>
+                    <ul id="indicators" class="list-disc list-inside text-gray-600"></ul>
+                </div>
+
+                <div class="mt-4">
+                    <h3 class="font-medium text-gray-700 mb-2">Suggested Sales Pitch</h3>
+                    <p id="sales-pitch" class="text-gray-600 p-3 bg-gray-50 rounded-lg border border-gray-200"></p>
+                </div>
+            </div>
+            
+            <div id="error" class="mt-6 bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg hidden">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <span id="error-message"></span>
+                </div>
+            </div>
+            
+            <div id="loading" class="mt-6 text-center hidden">
+                <div class="loading-spinner mx-auto"></div>
+                <p class="mt-4 text-gray-600">Analyzing website...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', path='/js/main.js') }}"></script>
+</body>
+</html> 
